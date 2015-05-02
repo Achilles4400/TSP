@@ -14,7 +14,7 @@ public class Launcher {
 	
 	/**
 	 * 
-	 * @param args[0] the file (path included) with he configuration settings
+	 * @param args[0] the file (path included) with the configuration settings
 	 */
 	public static void main(String[] args) {
 		//read properties
