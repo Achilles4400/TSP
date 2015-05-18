@@ -32,14 +32,14 @@ public class MyAlgorithm implements Algorithm {
         System.out.println("Taille de la matrice de distance : "+instance.getN());
 
         //print some distances
-        for (int i = 0 ; i < 2 ; i++)
-			for (int j = 0 ; j < 2 ; j++)
+        for (int i = 0 ; i <= 2 ; i++)
+			for (int j = 0 ; j <= 2 ; j++)
 				System.out.println("d("+i+","+j+")="+instance.getDistance(i, j));
 
 
         System.out.println("I am going to use: "+config.getProperty("threads")+ " threads");
 
-        int iterations = Integer.parseInt(config.getProperty("threads"));
+        int iterations = Integer.parseInt(config.getProperty("iterations"));
         int granularite = 16;   // Plus c'est grand, plus le grain est fin
         int nbTasks = iterations/granularite;
 
@@ -53,7 +53,7 @@ public class MyAlgorithm implements Algorithm {
 
         //Creating the list of tasks
         for(int t=1; t<=nbTasks; t++){
-            tasks.add(new TSPComputation(iterations/nbTasks, 1,instance));
+            tasks.add(new TSPComputation(iterations/nbTasks,instance));
         }
 
 
@@ -76,31 +76,13 @@ public class MyAlgorithm implements Algorithm {
                 if (sStar.getOF() <= sFound.getOF())
                     sStar = sFound;
             }
+            return sStar;
 
         }catch (InterruptedException | ExecutionException e)
         {
             System.out.println("Error while getting results");
         }
-
-
-
-
-
-
-
-
-
-//		for(int p=0; p<Integer.valueOf(config.getProperty("threads"));p++){
-//			(new Thread(new Runnable()
-//					{
-//						@Override
-//						public void run() {
-//							System.out.println("Hi I am thread "+Thread.currentThread().getName());
-//						}
-//					}
-//					)).start();;
-//		}
-
+        
 
 
 
