@@ -24,8 +24,8 @@ public class TSPComputation implements Callable<Solution> {
     public Solution call() throws Exception {
 
         Solution sStar;
-
         sStar = this.MSLS();
+//        System.out.println("Arrivée : "+sStar);
         return sStar;
     }
 
@@ -36,10 +36,14 @@ public class TSPComputation implements Callable<Solution> {
             s=buidInitialSolution();
             s.setOF(TSPCostCalculator.calcOF(instance.getDistanceMatrix(), s));
             s=localSearch(s);
-            if (i == 0)
+            if (i == 0) {
                 sStar = s;
-            else if (s.getOF() <= sStar.getOF())
+//                System.out.println("Amélioration de solution trouvé : "+sStar);
+            }
+            else if (s.getOF() < sStar.getOF()) {
                 sStar = s;
+//                System.out.println("Amélioration de solution trouvé : " + sStar);
+            }
         }
 
         return sStar;
@@ -64,14 +68,14 @@ public class TSPComputation implements Callable<Solution> {
         while(continu)
         {
             continu=false;
-            for (int i = 0 ; i <= s.size() ; i++){
-                for (int j = 0 ; j <= s.size() ; j++){
+            for (int i = 0 ; i <= s.size()-1 ; i++){
+                for (int j = 0 ; j <= s.size()-1 ; j++){
                     if (i == j)
                         continue;
                     temp = s.clone();
                     temp.swap(i,j);
-                    temp.setOF(TSPCostCalculator.calcOF(instance.getDistanceMatrix(), s));
-                    if (temp.getOF() <= sStar.getOF()) {
+                    temp.setOF(TSPCostCalculator.calcOF(instance.getDistanceMatrix(), temp));
+                    if (temp.getOF() < sStar.getOF()) {
                         sStar = temp;
                         continu = true;
                     }

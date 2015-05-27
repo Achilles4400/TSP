@@ -20,30 +20,24 @@ public class MyAlgorithm implements Algorithm {
 
 	@Override
 	public Solution run(Properties config) {
-		System.out.println("Algorithm here: I'm going to solve the TSP");
-		System.out.println("The instance is: " + config.getProperty("instance"));
-
 		//read instance
 		InstanceReader ir=new InstanceReader();
 		ir.buildInstance(config.getProperty("instance"));
 		//get the instance
 		Instance instance=ir.getInstance();
-
-        System.out.println("Taille de la matrice de distance : "+instance.getN());
-
-        //print some distances
-        for (int i = 0 ; i <= 2 ; i++)
-			for (int j = 0 ; j <= 2 ; j++)
-				System.out.println("d("+i+","+j+")="+instance.getDistance(i, j));
+//
+//        //print some distances
+//        for (int i = 0 ; i <= 2 ; i++)
+//			for (int j = 0 ; j <= 2 ; j++)
+//				System.out.println("d("+i+","+j+")="+instance.getDistance(i, j));
 
 
-        System.out.println("I am going to use: "+config.getProperty("threads")+ " threads");
+//        System.out.println("I am going to use: "+config.getProperty("threads")+ " threads");
 
         int iterations = Integer.parseInt(config.getProperty("iterations"));
-        int granularite = 16;   // Plus c'est grand, plus le grain est fin
-        int nbTasks = iterations/granularite;
+        int nbTasks = Integer.parseInt(config.getProperty("tasks"));
 
-        System.out.println("I am going to carry: "+iterations+ " iterations");
+//        System.out.println("I am going to carry:  "+iterations+ " iterations");
 
         //Task are managed and executed by an ExecutorService
         ExecutorService executor = Executors.newFixedThreadPool(iterations);
@@ -68,19 +62,22 @@ public class MyAlgorithm implements Algorithm {
 
         //Getting the results
         try{
+//            System.out.println("Récupération des solutions... ");
             Solution sStar = new Solution();
             Solution sFound;
             sStar.setOF(Double.MAX_VALUE);
             for(Future<Solution> res :results){
                 sFound = res.get();
-                if (sStar.getOF() <= sFound.getOF())
-                    sStar = sFound;
+                if (sFound.getOF() < sStar.getOF()) {
+//                    System.out.println("Changement de sStar : "+ sStar);
+                    sStar = sFound.clone();
+                }
             }
             return sStar;
 
         }catch (InterruptedException | ExecutionException e)
         {
-            System.out.println("Error while getting results");
+            System.out.println("Error while getting results : "+e.getMessage() +"\nCause : "+e.getCause());
         }
         
 

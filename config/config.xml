@@ -6,6 +6,7 @@
    </comment>
    <entry key="algorithm">polytech.tours.di.parallel.tsp.example.MyAlgorithm</entry>
    <entry key="instance">./data/wi29.tsp.txt</entry>
-   <entry key="iterations">100</entry>
-   <entry key="threads">8</entry>
+   <entry key="iterations">32</entry>
+   <entry key="tasks">2</entry>
+   <entry key="threads">2</entry>
 </properties>
